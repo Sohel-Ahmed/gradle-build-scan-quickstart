@@ -1,12 +1,21 @@
-plugins {
-    id 'java'
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:latest.release"
+  }
 }
+apply plugin: "com.jfrog.artifactory"
+apply plugin: 'maven-publish'
+//apply plugin: "com.jfrog.artifactory"
+apply plugin: 'java'
 
-//apply-plugin: 'java'
 
 repositories {
     jcenter()
 }
+
 
 dependencies {
     compile 'com.google.guava:guava:23.0'
@@ -20,4 +29,34 @@ task zipping(type: Zip){
  include 'reports/*/*/*/*.*' //to include contents of a folder present inside Reports directory
  archiveName 'artifacts.zip'
  destinationDir(file('build/'))
+}
+
+artifactory {
+    contextUrl = "${artifactory_contextUrl}"
+    publish {
+        repository {
+            repoKey = 'libs-snapshot-local'
+            username = "${artifactory_user}"
+            password = "${artifactory_password}"
+            maven = true
+
+        }
+        defaults {
+            publications ('mavenJava')
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+def dir = 'build/libs/'
+def f = file("$dir/artifacts")
+artifacts {
+    archives file: f, name: f.getName(), type: 'zip'
 }
