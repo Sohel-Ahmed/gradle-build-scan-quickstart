@@ -2,6 +2,8 @@ plugins {
     id 'java'
 }
 
+//apply-plugin: 'java'
+
 repositories {
     jcenter()
 }
@@ -9,4 +11,13 @@ repositories {
 dependencies {
     compile 'com.google.guava:guava:23.0'
     testCompile 'junit:junit:4.12'
+}
+
+task zipping(type: Zip){
+ description 'This task will zip the jar and reports'
+ from 'build/'
+ include 'libs/*jar'
+ include 'reports/*/*/*/*.*' //to include contents of a folder present inside Reports directory
+ archiveName 'artifacts.zip'
+ destinationDir(file('build/'))
 }
