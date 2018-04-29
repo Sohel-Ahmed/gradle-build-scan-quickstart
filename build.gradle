@@ -26,7 +26,7 @@ task zipping(type: Zip){
  description 'This task will zip the jar and reports'
  from 'build/'
  include 'libs/*jar'
- include 'reports/*/*/*/*.*' //to include contents of a folder present inside Reports directory
+ //include 'reports/*/*/*/*.*' //to include contents of a folder present inside Reports directory
  archiveName 'artifacts.zip'
  destinationDir(file('build/'))
 }
@@ -55,8 +55,8 @@ publishing {
     }
 }
 
-def dir = 'build/libs/'
-def f = file("$dir/artifacts")
-artifacts {
-    archives file: f, name: f.getName(), type: 'zip'
-}
+//def dir = 'build/libs/'
+//def f = file("$dir/artifacts")
+//artifacts {
+//    archives file: f, name: f.getName(), type: 'zip'
+//}
